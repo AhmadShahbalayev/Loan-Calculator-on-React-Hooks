@@ -17,6 +17,7 @@ export default props => {
 
         // Array to map tbody:
         const tableBody = [];
+        let totalInterest = 0;
 
         for (let i = 0; i < parsedTime; i++) {
             let interest = 0;
@@ -24,12 +25,14 @@ export default props => {
 
             interest = +(parsedAmount * monthlyRate);
             monthlyPrincipal = +(payment - interest);
+            totalInterest += interest;
 
             let obj = {
                 month: i + 1,
                 payment: payment.toFixed(2),
                 debt: parsedAmount.toFixed(2),
                 rate: interest.toFixed(2),
+                totalInterest: totalInterest.toFixed(2),
                 principal: monthlyPrincipal.toFixed(2)
             }
 
@@ -41,35 +44,34 @@ export default props => {
     }
 
     return (
-        <React.Fragment>
-            <ul>
-                <li>Loan amount: {parsedAmount.toFixed(2)}</li>
-                <li>Interest rate: {(parsedRate).toFixed(2)}%</li>
-            </ul>
-            <table>
+        <section className="table-section">
+            <table className="table">
                 <thead>
                     <tr>
-                        <th>Month</th>
-                        <th>Monthly Payment</th>
-                        <th>Principal</th>
+                        <th>Month №</th>
+                        <th>Payment</th>
+                        <th>Principal </th>
                         <th>Interest</th>
-                        <th>Debt</th>
+                        <th>Total Interest</th>
+                        <th>Total Debt</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        amortize(parsedAmount, parsedTime, parsedRate).map(row => {
-                            return <tr key={row.month}>
-                                <td>#{row.month}</td>
-                                <td>${row.payment}</td>
-                                <td>${row.principal}</td>
-                                <td>${row.rate}</td>
-                                <td>${row.debt}</td>
-                            </tr>
-                        })
-                    }
+                    {amortize(parsedAmount, parsedTime, parsedRate).map(row => {
+                        return <tr key={row.month}>
+                            <td>{row.month}</td>
+                            <td>${row.payment}</td>
+                            <td>${row.principal}</td>
+                            <td>${row.rate}</td>
+                            <td>${row.totalInterest}</td>
+                            <td>${row.debt}</td>
+                        </tr>
+                    })}
+                    <tr>
+                        <td colSpan={6}>Closing balance: $0</td>
+                    </tr>
                 </tbody>
             </table>
-        </React.Fragment>
+        </section>
     )
 }

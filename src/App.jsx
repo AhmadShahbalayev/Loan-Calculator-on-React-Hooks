@@ -4,7 +4,7 @@ import Homepage from './pages/Homepage';
 
 export default () => {
   return (
-    <main>
+    <main className="app">
       <Homepage />
     </main>
   )

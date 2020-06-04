@@ -5,12 +5,15 @@ import { useForm } from 'react-hook-form';
 export default props => {
 
   const { register, handleSubmit, errors } = useForm();
-  const onSubmit = values => props.setValues(values);
+  const onSubmit = values => {
+    props.setValues(values);
+    props.setVisibility(true);
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="loan-form">
       <div>
-        <label htmlFor="amount">Initial amount</label>
+        <label htmlFor="amount">Loan amount</label>
         <input type="number" name="amount" id="amount"
           ref={register({
             required: true,
@@ -19,7 +22,7 @@ export default props => {
         {errors.amount && <p>This field must be a positive number</p>}
       </div>
       <div>
-        <label htmlFor="time">Months</label>
+        <label htmlFor="time">Loan term in months</label>
         <input type="number" name="time" id="time"
           ref={register({
             required: true,
@@ -28,7 +31,7 @@ export default props => {
         {errors.time && <p>This field must be a positive number</p>}
       </div>
       <div>
-        <label htmlFor="rate">Interest rate</label>
+        <label htmlFor="rate">Interest rate per year</label>
         <input type="number" name="rate" id="rate"
           ref={register({
             required: true,
@@ -36,9 +39,7 @@ export default props => {
           })} />
         {errors.rate && <p>This field must be a positive number</p>}
       </div>
-      <div>
-        <button type="submit">Calculate</button>
-      </div>
+      <button type="submit">Calculate</button>
     </form>
   )
 }
