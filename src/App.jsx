@@ -1,10 +1,11 @@
 // Libraries:
 import React from 'react';
+import Homepage from './pages/Homepage';
 
 export default () => {
   return (
-    <React.Fragment>
-      <h1>THIS IS APP JSX</h1>
-    </React.Fragment>
+    <main>
+      <Homepage />
+    </main>
   )
 }
