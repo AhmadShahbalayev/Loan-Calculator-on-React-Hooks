@@ -15,12 +15,6 @@ export default props => {
         const monthlyRate = parsedRate / 12;
         const payment = parsedDebt * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -parsedTime)));
 
-        // Creating values for UI:
-        let uiDebt = parsedDebt.toFixed(2);
-        const uiInterestRate = (parsedRate * 100).toFixed(2);
-        const uiPayment = payment.toFixed(2); 
-        const uiTotalDebt = (payment * parsedTime).toFixed(2);
-
         // Array to map tbody:
         const tableBody = [];
 
@@ -28,18 +22,19 @@ export default props => {
             let calculatedInterest = 0;
             let monthlyPrincipal = 0;
 
-            calculatedInterest = (parsedDebt * monthlyRate).toFixed(2);
+            calculatedInterest = +(+parsedDebt * monthlyRate).toFixed(2);
             monthlyPrincipal = (payment - calculatedInterest).toFixed(2);
 
             let obj = {
                 month: i + 1,
-                debt: uiDebt,
+                payment: payment.toFixed(2),
+                debt: parsedDebt.toFixed(2),
                 rate: calculatedInterest,
                 principal: monthlyPrincipal
             }
 
             tableBody.push(obj);
-            uiDebt -= monthlyPrincipal;
+            parsedDebt -= monthlyPrincipal;
         }
 
         return tableBody;
@@ -57,7 +52,17 @@ export default props => {
                 </tr>
             </thead>
             <tbody>
-                {/* Here will be table body... */}
+                {
+                    amortize(parsedDebt, parsedTime, parsedRate).map(row => {
+                        return <tr>
+                            <td>{row.month}</td>
+                            <td>{row.payment}</td>
+                            <td>{row.principal}</td>
+                            <td>{row.rate}</td>
+                            <td>{row.debt}</td>
+                        </tr>
+                    })
+                }
             </tbody>
         </table>
     )
